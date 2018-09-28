@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, ManyToMany, JoinTable} from 'typeorm';
+import {Category} from './category';
+import {Tag} from './tag';
 
 @Entity()
 export class Topic {
@@ -12,27 +14,32 @@ export class Topic {
   @Column('text')
   content: string;
 
-  @Column()
-  cid: number;
+  @ManyToOne(type => Category, category => category.topics, { eager: true })
+  @JoinColumn({ name: 'cid'})
+  category: Category;
 
-  @Column()
+  @ManyToMany(type => Tag, tag => tag.topics, { eager: true })
+  @JoinTable()
+  tags: Tag[];
+
+  @Column({ nullable: true })
   uid: number;
 
-  @Column()
+  @Column({ nullable: true })
   viewCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   likeCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   followCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   deleted: number;
 
-  @Column()
+  @Column({ nullable: true })
   createAt: string;
 
-  @Column()
+  @Column({ nullable: true })
   updateAt: string;
 }

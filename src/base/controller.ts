@@ -12,9 +12,9 @@ export class BaseController {
     return this.service.list(query);
   }
 
-  @Get('/:id')
-  one(@Param() params) {
-    return this.service.one(params.id);
+  @Get(':id')
+  detail(@Param() params) {
+    return this.service.detail(params.id);
   }
 
   @Post()
@@ -22,12 +22,12 @@ export class BaseController {
     return this.service.create(data);
   }
 
-  @Put('/:id')
+  @Put(':id')
   update(@Param() params, @Body() data) {
     return this.service.update(params.id, data);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   remove(@Param() params) {
     return this.service.remove(params.id);
   }

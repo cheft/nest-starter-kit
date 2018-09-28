@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from 'typeorm';
+import {Topic} from './topic';
 
 @Entity()
 export class Tag {
@@ -9,9 +10,12 @@ export class Tag {
   @Column()
   name: string;
 
-  @Column()
+  @ManyToMany(type => Topic, topic => topic.tags)
+  topics: Topic[];
+
+  @Column({ nullable: true })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   disabled: number;
 }

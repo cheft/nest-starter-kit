@@ -9,19 +9,26 @@ import { Tag } from './entity/tag';
 import { TagService } from './service/tag';
 import { TagController } from './controller/tag';
 
+import { Topic } from './entity/topic';
+import { TopicService } from './service/topic';
+import { TopicController } from './controller/topic';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     TypeOrmModule.forFeature([Category]),
     TypeOrmModule.forFeature([Tag]),
+    TypeOrmModule.forFeature([Topic]),
   ],
   providers: [
     CategoryService,
-    TagService
+    TagService,
+    TopicService,
   ],
   controllers: [
     CategoryController,
-    TagController
+    TagController,
+    TopicController,
   ]
 })
 export class AppModule {}

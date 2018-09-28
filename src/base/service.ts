@@ -9,18 +9,47 @@ export class BaseService {
    * @param query 查询条件
    */
   async list(query) {
-    return await this.repository.find();
+    let page = query._page || 1;
+    let pageSize = query._pageSize || 10;
+    delete query._page
+    delete query._pageSize
+
+    let order = {};
+    if (query._order) {
+      let tmp = query._order.split('_');
+      order[tmp[0]] = tmp[1].toUpperCase();
+      delete query._order;
+    } else {
+      order = { id: 'ASC'};
+    }
+
+    let result = await this.repository.findAndCount({
+      where: query,
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+      order: order,
+    });
+    
+    return {
+      list: result[0],
+      count: result[1],
+    }
   }
 
   /**
    * 获取单个对象
    * @param id 
    */
-  async one(id) {
-    return await this.repository.findOne(id);
+  async detail(id) {
+    let result = await this.repository.findOne(id) || [];
+    // 无数据时为空数组
+    if (result.length === 0) {
+      return {};
+    }
+    return result;
   }
 
-  /**
+  /** 
    * 创建对象
    * @param data 
    */
