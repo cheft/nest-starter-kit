@@ -12,7 +12,7 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column()
@@ -21,15 +21,15 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   picture: string;
 
-  @Column()
-  status: string;
+  @Column({ default: 1 })
+  status: number;
 
-  @Column()
-  createAt: string;
+  @Column({ default: () => "NOW()" })
+  createAt: Date;
 
-  @Column()
-  updateAt: string;
+  @Column({ default: () => "NOW()" })
+  updateAt: Date;
 }

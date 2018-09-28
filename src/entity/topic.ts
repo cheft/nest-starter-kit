@@ -1,6 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne, ManyToMany, JoinTable} from 'typeorm';
 import {Category} from './category';
 import {Tag} from './tag';
+import {User} from './user';
 
 @Entity()
 export class Topic {
@@ -22,24 +23,25 @@ export class Topic {
   @JoinTable()
   tags: Tag[];
 
-  @Column({ nullable: true })
-  uid: number;
+  @ManyToOne(type => User, { eager: true })
+  @JoinColumn({ name: 'uid'})
+  user: User;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   viewCount: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   likeCount: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   followCount: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   deleted: number;
 
-  @Column({ nullable: true })
-  createAt: string;
+  @Column({ default: () => "NOW()" })
+  createAt: Date;
 
-  @Column({ nullable: true })
-  updateAt: string;
+  @Column({ default: () => "NOW()" })
+  updateAt: Date;
 }

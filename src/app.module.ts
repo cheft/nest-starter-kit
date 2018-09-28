@@ -13,22 +13,33 @@ import { Topic } from './entity/topic';
 import { TopicService } from './service/topic';
 import { TopicController } from './controller/topic';
 
+import { User } from './entity/user';
+import { UserService } from './service/user';
+import { UserController } from './controller/user';
+
+import { AuthModule } from './auth.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     TypeOrmModule.forFeature([Category]),
     TypeOrmModule.forFeature([Tag]),
     TypeOrmModule.forFeature([Topic]),
+    TypeOrmModule.forFeature([User]),
+
+    AuthModule,
   ],
   providers: [
     CategoryService,
     TagService,
     TopicService,
+    UserService,
   ],
   controllers: [
     CategoryController,
     TagController,
     TopicController,
+    UserController,
   ]
 })
 export class AppModule {}

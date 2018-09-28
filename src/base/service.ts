@@ -9,8 +9,8 @@ export class BaseService {
    * @param query 查询条件
    */
   async list(query) {
-    let page = query._page || 1;
-    let pageSize = query._pageSize || 10;
+    let page = parseInt(query._page || 1, 10);
+    let pageSize = parseInt(query._pageSize || 10, 10);
     delete query._page
     delete query._pageSize
 
@@ -33,6 +33,8 @@ export class BaseService {
     return {
       list: result[0],
       count: result[1],
+      page: page,
+      pageSize: pageSize,
     }
   }
 
