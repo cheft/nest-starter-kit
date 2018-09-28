@@ -3,21 +3,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PassportStrategy } from '@nestjs/passport';
 import {Strategy} from 'passport-http-bearer';
-import { User } from '../entity/user';
+import { Token } from '../entity/token';
 
 @Injectable()
 export class AuthService extends PassportStrategy(Strategy) {
-  constructor(@InjectRepository(User) private readonly repository: Repository<User>) {
+  constructor(@InjectRepository(Token) private readonly repository: Repository<Token>) {
     super();
   }
 
-  // TODO: token 管理, 暂时用用户 id 代替
+  // TODO: token 管理
   async validate(token, done) {
-    const user = await this.repository.findOne(token);
-    if (!user) {
-      return done(new UnauthorizedException(), false);
+    const instance = await this.repository.findOne(token);
+    // const instance = await this.repository.createQueryBuilder('token')
+    // .leftJoinAndSelect('token.user', 'user')
+    // .where('token.id = :id', { id: token }).getOne();
+
+    if (instance && instance.user) {
+      return done(null, instance.user);
     }
-    done(null, user);
+    
+    done(new UnauthorizedException(), false);
   }
 
 }

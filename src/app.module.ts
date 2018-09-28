@@ -17,6 +17,7 @@ import { User } from './entity/user';
 import { UserService } from './service/user';
 import { UserController } from './controller/user';
 
+import { Token } from './entity/token';
 import { AuthModule } from './auth.module';
 
 @Module({
@@ -26,6 +27,7 @@ import { AuthModule } from './auth.module';
     TypeOrmModule.forFeature([Tag]),
     TypeOrmModule.forFeature([Topic]),
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Token]),
 
     AuthModule,
   ],
