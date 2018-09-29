@@ -1,11 +1,14 @@
 import { Get, Post, Put, Delete, Param, Query, Body } from '@nestjs/common';
+import { PureController } from './pure.controller';
 
 /**
  * Controller 基类
  * 基于 restful 标准的路由规则
  */
-export class BaseController {
-  constructor(protected readonly service) {}
+export class BaseController extends PureController {
+  constructor(protected readonly service) {
+    super(service);
+  }
 
   @Get()
   list(@Query() query) {

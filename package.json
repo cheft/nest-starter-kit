@@ -25,6 +25,8 @@
     "@nestjs/passport": "^5.1.0",
     "@nestjs/typeorm": "^5.2.2",
     "ali-oss": "^6.0.1",
+    "class-transformer": "^0.1.9",
+    "class-validator": "^0.9.1",
     "jsonwebtoken": "^8.3.0",
     "mysql": "^2.16.0",
     "passport": "^0.4.0",

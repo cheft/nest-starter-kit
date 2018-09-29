@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Category } from './entity/category';
@@ -44,4 +44,5 @@ import { AuthModule } from './auth.module';
     UserController,
   ]
 })
+
 export class AppModule {}

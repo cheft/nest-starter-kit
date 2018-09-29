@@ -1,12 +1,16 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, Query, Req,
-  UseGuards, UseInterceptors, FileInterceptor, UploadedFile, HttpException, HttpStatus } from '@nestjs/common';
+  UseGuards, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../service/user';
+import { User } from '../entity/user';
 import upload from '../util/upload';
+import { PureController } from '../base/pure.controller';
 
 @Controller('user')
-export class UserController {
-  constructor(protected readonly service: UserService) {}
+export class UserController extends PureController {
+  constructor(protected readonly service: UserService) {
+    super(service);
+  }
 
   /**
    * 获取所有用户
@@ -82,7 +86,7 @@ export class UserController {
    * @param data 用户数据
    */
   @Post()
-  register(@Body() data) {
+  register(@Body() data: User) {
     return this.service.create(data);
   }
 

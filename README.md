@@ -82,8 +82,8 @@ $ npm run test:cov
 
 ## Todo
 - [ ] AuthGuard & RolesGuard
-- [ ] Class validate
-- [ ] Handle error
+- [x] Class validate
+- [x] Transform Response Data
 - [ ] Logger file
 
 ## Support

@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {IsMobilePhone, IsEmail} from "class-validator";
 
 @Entity()
 export class User {
@@ -19,6 +20,7 @@ export class User {
   phone: string;
 
   @Column()
+  @IsEmail({}, { message: '邮箱格式不正确' })
   email: string;
 
   @Column({ nullable: true })
