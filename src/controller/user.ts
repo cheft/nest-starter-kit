@@ -76,7 +76,7 @@ export class UserController extends PureController {
   /**
    * 获取某用户的粉丝
    */
-  @Get('/:uid/fans')
+  @Get(':uid/fans')
   getMyFans() {
 
   }
@@ -103,6 +103,7 @@ export class UserController extends PureController {
   /**
    * 获取用户的所有 token
    */
+  @Get('tokens')
   getTokens() {
 
   }
@@ -110,6 +111,7 @@ export class UserController extends PureController {
   /**
    * 验证 token 获取用户信息
    */
+  @Post('token')
   verifyToken() {
 
   }
@@ -117,12 +119,17 @@ export class UserController extends PureController {
   /**
    * 登出并删除 token
    */
+  @Get('logout')
   logout() {
 
   }
 
   /**
-   * 
+   * 重置密码
    */
+  @Post('reset/password')
+  resetPassword() {
+    
+  }
 
 }
