@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, Query, Req,
+import { Controller, Get, Post, Put, Delete, Param, Body, Query, Req, Headers,
   UseGuards, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { plainToClass } from 'class-transformer';
 import { UserService } from '../service/user';
 import { User } from '../entity/user';
 import upload from '../util/upload';
@@ -13,35 +14,84 @@ export class UserController extends PureController {
   }
 
   /**
-   * 获取所有用户
-   * @param query 条件
-   * @param req request
+   * 注册，TODO: 短信验证
+   * @param data 用户数据
    */
-  @Get()
-  @UseGuards(AuthGuard('bearer'))
-  list(@Query() query, @Req() req) {
-    console.log('current user:', req.user);
-    return this.service.list(query);
+  @Post('register')
+  register(@Body() data: User) {
+    let user = plainToClass(User, data);
+    return this.service.register(user);
   }
 
   /**
-   * 获取用户信息
-   * @param params 
+   * 登录
+   * @param data 
    */
-  @Get(':id')
-  detail(@Param() params) {
-    return this.service.detail(params.id);
+  @Post('login')
+  login(@Body() data) {
+    return this.service.login(data);
   }
 
-  @Get('batch')
-  simpleInfo(@Param() params) {
-    return this.service.detail(params.id);
+  /**
+   * 获取用户的所有 token，TODO:
+   */
+  @Get('tokens')
+  getTokens() {}
+
+  /**
+   * 验证 token 获取用户信息，TODO:
+   */
+  @Post('token')
+  verifyToken() {}
+
+  /**
+   * 获取当前用户信息
+   */
+  @Get('current')
+  @UseGuards(AuthGuard('bearer'))
+  current(@Req() req) {
+    return req.user;
+  }
+
+  /**
+   * 登出
+   */
+  @Get('logout')
+  @UseGuards(AuthGuard('bearer'))
+  logout(@Headers() header) {
+    let token = header.authorization.split(' ')[1];
+    return this.service.logout(token);
+  }
+
+  /**
+   * 修改密码
+   */
+  @Put('change/password')
+  @UseGuards(AuthGuard('bearer'))
+  changePassword(@Req() req, @Body() data) {
+    return this.service.changePassword(req.user, data);
+  }
+
+  /**
+   * 重置密码，TODO: 短信验证
+   */
+  @Put('reset/password')
+  @UseGuards(AuthGuard('bearer'))
+  resetPassword(@Req() req, @Body() data) {
+    return this.service.resetPassword(req, data);
+  }
+
+  @Post('batch')
+  simpleInfo(@Body() data) {
+    let uids = data.uids.split(',');
+    return this.service.batchList(uids);
   }
 
    /**
-   * 更新信息
+   * 修改用户信息
    */
   @Put(':id')
+  @UseGuards(AuthGuard('bearer'))
   update(@Param() params, @Body() data) {
     return this.service.update(params.id, data);
   }
@@ -82,54 +132,12 @@ export class UserController extends PureController {
   }
 
   /**
-   * 注册
-   * @param data 用户数据
+   * 获取指定用户信息
+   * @param params 
    */
-  @Post()
-  register(@Body() data: User) {
-    return this.service.create(data);
-  }
-
-  /**
-   * 登录
-   * @param data 
-   */
-  @Post('login')
-  login(@Body() data) {
-    return this.service.login(data);
-  }
-
-
-  /**
-   * 获取用户的所有 token
-   */
-  @Get('tokens')
-  getTokens() {
-
-  }
-
-  /**
-   * 验证 token 获取用户信息
-   */
-  @Post('token')
-  verifyToken() {
-
-  }
-
-  /**
-   * 登出并删除 token
-   */
-  @Get('logout')
-  logout() {
-
-  }
-
-  /**
-   * 重置密码
-   */
-  @Post('reset/password')
-  resetPassword() {
-    
+  @Get(':id')
+  detail(@Param() params) {
+    return this.service.detail(params.id);
   }
 
 }
