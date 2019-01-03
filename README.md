@@ -81,10 +81,9 @@ $ npm run test:cov
 ```
 
 ## Todo
-- [ ] AuthGuard & RolesGuard
+- [x] AuthGuard & RolesGuard
 - [x] Class validate
 - [x] Transform Response Data
-- [ ] Logger file
 
 ## Support
 
@@ -99,3 +98,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](LICENSE).
+

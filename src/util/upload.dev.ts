@@ -3,10 +3,10 @@ import { extname } from 'path';
 
 const client = new OSS({
   region: 'oss-cn-shenzhen',
-  // 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，部署在服务端使用RAM子账号或STS，部署在客户端使用STS（正式）。
+  // 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，部署在服务端使用RAM子账号或STS，部署在客户端使用STS（dev）。
   accessKeyId: 'xxxx',
   accessKeySecret: 'xxxx',
-  bucket: 'prod-xxx-xxxx',
+  bucket: 'dev-xxx-xxxx',
 });
 
 function uuidv4() {

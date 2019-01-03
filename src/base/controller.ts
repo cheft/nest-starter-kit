@@ -15,11 +15,6 @@ export class BaseController extends PureController {
     return this.service.list(query);
   }
 
-  @Get(':id')
-  detail(@Param() params) {
-    return this.service.detail(params.id);
-  }
-
   @Post()
   create(@Body() data) {
     return this.service.create(data);
@@ -33,5 +28,10 @@ export class BaseController extends PureController {
   @Delete(':id')
   remove(@Param() params) {
     return this.service.remove(params.id);
+  }
+
+  @Get(':id')
+  detail(@Param() params) {
+    return this.service.detail(params.id);
   }
 }

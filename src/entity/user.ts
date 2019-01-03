@@ -1,10 +1,11 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
-import {IsMobilePhone, IsEmail} from "class-validator";
-import * as hashers from 'node-django-hashers';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import * as crypto from 'crypto';
+
+import { Follow } from './follow';
 
 @Entity()
 export class User {
-  
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,36 +25,42 @@ export class User {
   // @IsMobilePhone('', { message: '手机格式不正确' })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   // @IsEmail({}, { message: '邮箱格式不正确' })
   email: string;
 
   @Column({ nullable: true })
   picture: string;
 
+  @OneToMany(type => Follow, follow => follow.user)
+  follows: Follow[];
+
   @Column({ default: 1 })
   status: number;
 
-  @Column({ default: () => "NOW()" })
+  @Column({ default: 0 })
+  isAdmin: number;
+
+  @Column({ default: 0 })
+  vip: number;
+
+  @Column({ default: () => 'NOW()' })
+  lastVisitTime: Date;
+
+  @Column({ default: () => 'NOW()' })
   createAt: Date;
 
-  @Column({ default: () => "NOW()" })
+  @Column({ default: () => 'NOW()' })
   updateAt: Date;
 
-  async makePassword(password: string) {
-    var h = new hashers.PBKDF2PasswordHasher();
-    var hash = await h.encode(password, h.salt()).then();
-    return hash;
+  verifyPassword(password: string) {
+    const h = crypto.createHmac('sha256', password).digest('hex');
+    return this.password === h;
   }
 
-  async verifyPassword(password: string) {
-    var h = new hashers.PBKDF2PasswordHasher();
-    return await h.verify(password, this.password);
-  }
-
-  async setPassword(password: string) {
+  setPassword(password: string) {
     if (password) {
-      this.password = await this.makePassword(password);
+      this.password = crypto.createHmac('sha256', password).digest('hex');
     } else {
       this.password = undefined;
     }

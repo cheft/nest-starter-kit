@@ -1,5 +1,4 @@
-import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -13,8 +12,8 @@ export class BaseInterceptor extends Logger implements NestInterceptor {
     context: ExecutionContext,
     call$: Observable<any>,
   ): Observable<any> {
-      return call$.pipe(map(data => {
-      return { statusCode: 200, data: data, message: 'Success' }
+    return call$.pipe(map((data) => {
+      return { data, statusCode: 200, message: 'Success' };
     }));
   }
 }

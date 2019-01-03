@@ -1,5 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
-import {Topic} from './topic';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Topic } from './topic';
 
 @Entity()
 export class Category {
@@ -14,7 +14,7 @@ export class Category {
   description: string;
 
   @OneToMany(type => Topic, topic => topic.category)
-  topics: Topic[]
+  topics: Topic[];
 
   /**
    * 父类
@@ -22,12 +22,12 @@ export class Category {
   @Column({ nullable: true })
   parentCid: number;
 
-  @Column({ nullable: true })
-  disabled: number;
+  @Column({ default: 1 })
+  status: number;
 
   /**
    * 排序字段
    */
   @Column({ nullable: true })
-  order: number;
+  sort: number;
 }

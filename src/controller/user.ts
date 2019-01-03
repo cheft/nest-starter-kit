@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, Query, Req, Headers,
+import { Controller, Get, Post, Put, Param, Body, Query, Req, Headers,
   UseGuards, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { plainToClass } from 'class-transformer';
@@ -19,13 +19,13 @@ export class UserController extends PureController {
    */
   @Post('register')
   register(@Body() data: User) {
-    let user = plainToClass(User, data);
+    const user = plainToClass(User, data);
     return this.service.register(user);
   }
 
   /**
    * 登录
-   * @param data 
+   * @param data
    */
   @Post('login')
   login(@Body() data) {
@@ -50,7 +50,8 @@ export class UserController extends PureController {
   @Get('current')
   @UseGuards(AuthGuard('bearer'))
   current(@Req() req) {
-    return req.user;
+    const id = parseInt(req.user.id, 10);
+    return this.service.getMoreInfo(id, undefined);
   }
 
   /**
@@ -59,7 +60,7 @@ export class UserController extends PureController {
   @Get('logout')
   @UseGuards(AuthGuard('bearer'))
   logout(@Headers() header) {
-    let token = header.authorization.split(' ')[1];
+    const token = header.authorization.split(' ')[1];
     return this.service.logout(token);
   }
 
@@ -76,29 +77,33 @@ export class UserController extends PureController {
    * 重置密码，TODO: 短信验证
    */
   @Put('reset/password')
-  @UseGuards(AuthGuard('bearer'))
-  resetPassword(@Req() req, @Body() data) {
-    return this.service.resetPassword(req, data);
+  resetPassword(@Body() data) {
+    return this.service.resetPassword(data);
   }
 
+  /**
+   * 批量获取用户基本信息
+   * @param data
+   */
   @Post('batch')
   simpleInfo(@Body() data) {
-    let uids = data.uids.split(',');
+    const uids = data.uids.split(',');
     return this.service.batchList(uids);
   }
 
-   /**
-   * 修改用户信息
+  /**
+   * 修改当前用户信息
    */
-  @Put(':id')
+  @Put('current')
   @UseGuards(AuthGuard('bearer'))
-  update(@Param() params, @Body() data) {
-    return this.service.update(params.id, data);
+  update(@Req() req, @Body() data) {
+    data.updateAt = new Date();
+    return this.service.userUpdate(req.user.id, data);
   }
 
   /**
    * 用户头像上传
-   * @param image 
+   * @param image
    */
   @Post('upload')
   @UseGuards(AuthGuard('bearer'))
@@ -110,34 +115,59 @@ export class UserController extends PureController {
   /**
    * 切换关注
    */
-  @Post('follow/:id')
-  toggleFollow() {
-
-  }
-
-  /**
-   * 获取某用户的关注用户
-   */
-  @Get(':id/follow')
-  getMyFollow() {
-
+  @Put('follow/:id')
+  @UseGuards(AuthGuard('bearer'))
+  toggleFollow(@Req() req, @Param() param) {
+    return this.service.toggleFollow(req.user, parseInt(param.id, 10));
   }
 
   /**
    * 获取某用户的粉丝
    */
-  @Get(':uid/fans')
-  getMyFans() {
+  @Get(':id/fans')
+  getFans(@Param() param, @Query() query) {
+    return this.service.getFans(parseInt(param.id, 10), query);
+  }
 
+  /**
+   * 获取某用户关注的用户
+   */
+  @Get(':id/follow')
+  getFollow(@Param() param, @Query() query) {
+    return this.service.getFollow(parseInt(param.id, 10), query);
+  }
+
+  @Post('phone')
+  findPhone(@Body() data) {
+    return this.service.phone(data);
+  }
+
+  /**
+   * 获取用户最后访问时间
+   */
+  @Get('visittime')
+  @UseGuards(AuthGuard('bearer'))
+  findVisitTime(@Req() req, @Body() data) {
+    return this.service.findVisit(req, data);
+  }
+
+  /**
+   * 更新用户最后访问时间
+   */
+  @Post('updatetime')
+  @UseGuards(AuthGuard('bearer'))
+  updateVisitTime(@Req() req, @Body() data) {
+    return this.service.updateVisit(req, data);
   }
 
   /**
    * 获取指定用户信息
-   * @param params 
+   * @param params
    */
   @Get(':id')
-  detail(@Param() params) {
-    return this.service.detail(params.id);
+  detail(@Param() param, @Query() query) {
+    const id = parseInt(param.id, 10);
+    const loginUserId = parseInt(query.loginuser, 10);
+    return this.service.getMoreInfo(id, loginUserId);
   }
-
 }

@@ -21,7 +21,7 @@ export class AuthService extends PassportStrategy(Strategy) {
     if (instance && instance.user) {
       return done(null, instance.user);
     }
-    
+
     done(new UnauthorizedException(), false);
   }
 

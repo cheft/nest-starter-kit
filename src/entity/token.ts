@@ -1,19 +1,20 @@
-import {Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne} from 'typeorm';
-import {User} from './user';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, ManyToOne } from 'typeorm';
+import { User } from './user';
 
 @Entity()
 export class Token {
-  
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+
+  // @ts-ignore
+  @PrimaryGeneratedColumn('uuid', { length: 36 })
+  token: string;
 
   @ManyToOne(type => User, { eager: true })
-  @JoinColumn({ name: 'uid'})
+  @JoinColumn({ name: 'uid' })
   user: User;
 
-  @Column({ default: () => "NOW()" })
+  @Column({ default: () => 'NOW()' })
   createAt: Date;
 
-  @Column({ default: () => "NOW()" })
+  @Column({ default: () => 'NOW()' })
   updateAt: Date;
 }

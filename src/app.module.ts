@@ -1,4 +1,4 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Category } from './entity/category';
@@ -17,8 +17,20 @@ import { User } from './entity/user';
 import { UserService } from './service/user';
 import { UserController } from './controller/user';
 
+import { Follow } from './entity/follow';
+
 import { Token } from './entity/token';
-import { AuthModule } from './auth.module';
+import { AuthService } from './service/auth';
+
+import { Comment } from './entity/comment';
+import { CommentController } from './controller/comment';
+import { CommentService } from './service/comment';
+
+import { Swiper } from './entity/swiper';
+
+// import { AdminModule } from './admin.module';
+import { SwiperService } from './service/swiper';
+import { SwiperController } from './controller/swiper';
 
 @Module({
   imports: [
@@ -28,21 +40,29 @@ import { AuthModule } from './auth.module';
     TypeOrmModule.forFeature([Topic]),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Token]),
+    TypeOrmModule.forFeature([Follow]),
+    TypeOrmModule.forFeature([Comment]),
+    TypeOrmModule.forFeature([Swiper]),
 
-    AuthModule,
+    // AdminModule,
   ],
   providers: [
     CategoryService,
     TagService,
     TopicService,
     UserService,
+    AuthService,
+    CommentService,
+    SwiperService,
   ],
   controllers: [
     CategoryController,
     TagController,
     TopicController,
     UserController,
-  ]
+    CommentController,
+    SwiperController,
+  ],
 })
 
 export class AppModule {}

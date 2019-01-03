@@ -5,7 +5,14 @@
   "username": "root",
   "password": "root",
   "database": "nest",
+  "charset": "utf8mb4",
   "entities": ["src/entity/*{.ts,.js}"],
   "synchronize": true,
-  "logging": true
+  "logging": true,
+
+  "migrationsTableName": "_db_migrations_record",
+  "migrations": ["migration/*.ts"],
+  "cli": {
+    "migrationsDir": "migration"
+  }
 }
