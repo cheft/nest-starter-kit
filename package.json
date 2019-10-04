@@ -24,7 +24,9 @@
     "predeploy:init": "rimraf dist && tsc",
     "deploy:init": "serverless deploy -v",
     "predeploy": "rimraf dist && tsc",
-    "deploy": "serverless deploy function -f index"
+    "deploy": "serverless deploy function -f index",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@nestjs/common": "^5.3.9",
@@ -45,7 +47,8 @@
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "typeorm": "^0.2.7",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.1.0",
@@ -81,5 +84,6 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "snyk": true
 }
