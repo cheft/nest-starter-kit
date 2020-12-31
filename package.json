@@ -27,7 +27,7 @@
     "deploy": "serverless deploy function -f index"
   },
   "dependencies": {
-    "@nestjs/common": "^5.3.9",
+    "@nestjs/common": "^7.6.5",
     "@nestjs/core": "^5.3.10",
     "@nestjs/passport": "^5.1.0",
     "@nestjs/typeorm": "^5.2.2",
