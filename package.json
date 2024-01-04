@@ -46,7 +46,7 @@
     "qs": "^6.5.2",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
-    "typeorm": "^0.2.7",
+    "typeorm": "^0.3.18",
     "typescript": "^3.0.1",
     "snyk": "^1.230.5"
   },
