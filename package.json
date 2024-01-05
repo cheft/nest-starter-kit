@@ -29,13 +29,13 @@
     "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
-    "@nestjs/common": "^5.3.9",
+    "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^5.3.10",
     "@nestjs/passport": "^5.1.0",
     "@nestjs/typeorm": "^5.2.2",
     "ali-oss": "^6.0.1",
     "aws-serverless-express": "^3.3.5",
-    "axios": "^0.18.0",
+    "axios": "^1.6.4",
     "class-transformer": "^0.1.9",
     "class-validator": "^0.9.1",
     "express-session": "^1.15.6",
